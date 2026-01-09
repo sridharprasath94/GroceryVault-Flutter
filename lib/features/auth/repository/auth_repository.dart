@@ -10,10 +10,10 @@ class AuthRepository {
 
   AuthRepository(
       this._auth, {
-        required String webClientId,
+        required String appId,
       }) : _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
-    serverClientId: webClientId,
+    serverClientId: appId,
   );
 
   TaskEither<AuthFailure, Unit> signInWithEmail({
