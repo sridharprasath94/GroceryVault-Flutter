@@ -79,3 +79,4 @@ macos/.symlinks/
 # Environment
 .env
 .env.*
+/firebase.json
