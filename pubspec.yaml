@@ -1,0 +1,30 @@
+
+name: groceryVault
+description: Grocery app converted from Kotlin Android to Flutter
+publish_to: 'none'
+
+environment:
+  sdk: ^3.10.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_bloc: ^8.1.3
+  go_router: ^13.2.0
+  equatable: ^2.0.5
+  google_sign_in: ^6.2.1
+  firebase_core: ^2.27.0
+  firebase_auth: ^4.17.8
+  fpdart: ^1.1.0
+  cloud_firestore: ^4.15.8
+  firebase_storage: ^11.6.8
+  drift: 2.18.0
+  drift_flutter: 0.2.0
+  get_it: ^7.6.7
+
+dev_dependencies:
+  drift_dev: ^2.18.0
+  build_runner: ^2.4.8
+  flutter_test:
+    sdk: flutter
