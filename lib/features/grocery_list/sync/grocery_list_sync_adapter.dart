@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:groceryVault/features/grocery_list/repository/grocery_list_local_data_source.dart';
+import 'package:groceryVault/features/grocery_list/data/grocery_list_store.dart';
 
 import '../../../sync/firestore_sync_adapter.dart';
 import '../domain/grocery_list.dart';
 
 class GroceryListSyncAdapter implements FirestoreSyncAdapter {
-  final GroceryListLocalDataSource _local;
+  final GroceryListStore _local;
   final String _uid;
 
   GroceryListSyncAdapter(this._local, this._uid);

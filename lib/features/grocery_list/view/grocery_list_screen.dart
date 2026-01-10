@@ -12,9 +12,9 @@ class GroceryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroceryListBloc(
-        getIt<GroceryListRepository>(),
-      )..add(GroceryListStarted()),
+      create: (_) =>
+          GroceryListBloc(getIt<GroceryListRepository>())
+            ..add(GroceryListStarted()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Groceries'),
@@ -44,9 +44,7 @@ class GroceryListScreen extends StatelessWidget {
 
             if (state is GroceryListLoaded) {
               if (state.groceries.isEmpty) {
-                return const Center(
-                  child: Text('No grocery lists yet'),
-                );
+                return const Center(child: Text('No grocery lists yet'));
               }
 
               return ListView.builder(
@@ -57,9 +55,7 @@ class GroceryListScreen extends StatelessWidget {
                   return ExpansionTile(
                     title: Text(
                       list.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     children: list.items.map((item) {
                       return CheckboxListTile(
