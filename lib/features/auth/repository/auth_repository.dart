@@ -10,10 +10,10 @@ class AuthRepository {
 
   AuthRepository(
       this._auth, {
-        required String appId,
+        required String webClientId,
       }) : _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
-    serverClientId: appId,
+    serverClientId: webClientId,
   );
 
   TaskEither<AuthFailure, Unit> signInWithEmail({
@@ -77,7 +77,8 @@ class AuthRepository {
 
         return unit;
       },
-      (error, _) {
+      (error, s) {
+        print('Sridhar Google sign-in error: $error');
         if (error is AuthFailure) return error;
         if (error is FirebaseAuthException) {
           return _mapFirebaseError(error);
