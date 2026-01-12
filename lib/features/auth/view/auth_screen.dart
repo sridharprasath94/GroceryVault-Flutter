@@ -25,9 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailureState) {
@@ -40,9 +38,9 @@ class _AuthScreenState extends State<AuthScreen> {
             };
 
             if (message.isNotEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(message)));
             }
           }
         },
@@ -54,17 +52,13 @@ class _AuthScreenState extends State<AuthScreen> {
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
+                decoration: const InputDecoration(labelText: 'Password'),
               ),
               const SizedBox(height: 24),
               BlocBuilder<AuthBloc, AuthState>(
@@ -78,21 +72,21 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: isLoading
                             ? null
                             : () {
-                          context.read<AuthBloc>().add(
-                            AuthLoginRequested(
-                              _emailController.text.trim(),
-                              _passwordController.text.trim(),
-                            ),
-                          );
-                        },
+                                context.read<AuthBloc>().add(
+                                  AuthLoginRequested(
+                                    _emailController.text.trim(),
+                                    _passwordController.text.trim(),
+                                  ),
+                                );
+                              },
                         child: isLoading
                             ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
                             : const Text('Login'),
                       ),
                       const SizedBox(height: 12),
@@ -102,10 +96,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: isLoading
                             ? null
                             : () {
-                          context
-                              .read<AuthBloc>()
-                              .add(AuthGoogleLoginRequested());
-                        },
+                                context.read<AuthBloc>().add(
+                                  AuthGoogleLoginRequested(),
+                                );
+                              },
                       ),
                     ],
                   );

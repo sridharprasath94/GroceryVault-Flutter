@@ -19,6 +19,7 @@ dependencies:
   fpdart: ^1.1.0
   cloud_firestore: ^4.15.8
   firebase_storage: ^11.6.8
+  flutter_svg: ^2.0.9
   drift: 2.18.0
   drift_flutter: 0.2.0
   get_it: ^7.6.7
@@ -32,3 +33,4 @@ dev_dependencies:
 flutter:
   assets:
     - .env
+    - assets/images/icon.svg
