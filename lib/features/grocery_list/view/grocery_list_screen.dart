@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/grocery_list_bloc.dart';
-import '../domain/grocery_list.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../../app/di/injection.dart';
 import '../repository/grocery_list_repository.dart';
@@ -13,9 +12,9 @@ class GroceryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GroceryListBloc(
-        getIt<GroceryListRepository>(),
-      )..add(GroceryListStarted()),
+      create: (_) =>
+          GroceryListBloc(getIt<GroceryListRepository>())
+            ..add(GroceryListStarted()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Groceries'),
@@ -45,9 +44,7 @@ class GroceryListScreen extends StatelessWidget {
 
             if (state is GroceryListLoaded) {
               if (state.groceries.isEmpty) {
-                return const Center(
-                  child: Text('No grocery lists yet'),
-                );
+                return const Center(child: Text('No grocery lists yet'));
               }
 
               return ListView.builder(
@@ -58,9 +55,7 @@ class GroceryListScreen extends StatelessWidget {
                   return ExpansionTile(
                     title: Text(
                       list.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     children: list.items.map((item) {
                       return CheckboxListTile(

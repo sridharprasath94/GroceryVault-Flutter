@@ -77,7 +77,8 @@ class AuthRepository {
 
         return unit;
       },
-      (error, _) {
+      (error, s) {
+        print('Sridhar Google sign-in error: $error');
         if (error is AuthFailure) return error;
         if (error is FirebaseAuthException) {
           return _mapFirebaseError(error);

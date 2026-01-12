@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:groceryVault/features/grocery_list/repository/grocery_list_local_data_source.dart';
+import 'package:groceryVault/features/grocery_list/data/grocery_list_store.dart';
 
 import '../../../app/core/failure/failure.dart';
 import '../../../app/di/injection.dart';
@@ -14,7 +14,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _repository;
 
-  AuthBloc(this._repository) : super(const AuthInitial()) {
+  AuthBloc(this._repository) : super(AuthChecking()) {
     on<AuthStarted>(_onAuthStarted);
     on<AuthLoginRequested>(_onLogin);
     on<AuthGoogleLoginRequested>(_onGoogleLogin);
@@ -42,7 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthLoginRequested event,
       Emitter<AuthState> emit,
       ) async {
-    emit(const AuthLoading());
+    emit(AuthLoading());
 
     final result = await _repository
         .signInWithEmail(
@@ -71,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthGoogleLoginRequested event,
       Emitter<AuthState> emit,
       ) async {
-    emit(const AuthLoading());
+    emit(AuthLoading());
 
     final result = await _repository.signInWithGoogle().run();
 
@@ -106,7 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _startGrocerySync(String uid) async {
-    final store = getIt<GroceryListLocalDataSource>();
+    final store = getIt<GroceryListStore>();
     final syncService = getIt<FirestoreSyncService>();
 
     final adapter = GroceryListSyncAdapter(store, uid);

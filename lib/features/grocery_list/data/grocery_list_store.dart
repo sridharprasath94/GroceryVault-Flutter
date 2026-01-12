@@ -1,6 +1,6 @@
 import '../domain/grocery_list.dart';
 
-abstract class GroceryListLocalDataSource {
+abstract class GroceryListStore {
   /// Stream grocery lists from local DB
   Stream<List<GroceryList>> watchAll();
 
