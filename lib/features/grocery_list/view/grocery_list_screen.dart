@@ -77,7 +77,7 @@ class GroceryListScreen extends StatelessWidget {
                         ),
                         title: Text(item.name),
                         onTap: () {
-                          // 🔜 Navigate to grocery detail screen
+                          // TODO - 🔜 Navigate to grocery detail screen
                         },
                         trailing: IconButton(
                           icon: const Icon(Icons.delete),
