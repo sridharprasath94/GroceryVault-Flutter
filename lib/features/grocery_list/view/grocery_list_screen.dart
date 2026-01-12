@@ -20,7 +20,15 @@ class GroceryListScreen extends StatelessWidget {
           title: const Text('Groceries'),
           actions: [
             IconButton(
+              icon: const Icon(Icons.sync),
+              tooltip: 'Sync with cloud',
+              onPressed: () {
+                context.read<GroceryListBloc>().add(GroceryListSyncRequested());
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
               onPressed: () {
                 context.read<AuthBloc>().add(AuthLogoutRequested());
               },
@@ -58,14 +66,51 @@ class GroceryListScreen extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     children: list.items.map((item) {
-                      return CheckboxListTile(
+                      return ListTile(
+                        leading: Checkbox(
+                          value: item.isChecked,
+                          onChanged: (_) {
+                            context.read<GroceryListBloc>().add(
+                              GroceryItemToggled(item.id),
+                            );
+                          },
+                        ),
                         title: Text(item.name),
-                        value: item.isChecked,
-                        onChanged: (_) {
-                          context.read<GroceryListBloc>().add(
-                            GroceryItemToggled(item.id),
-                          );
+                        onTap: () {
+                          // 🔜 Navigate to grocery detail screen
                         },
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: const Text('Delete item'),
+                                content: const Text(
+                                  'Are you sure you want to delete this item?',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: const Text('Delete'),
+                                  ),
+                                ],
+                              ),
+                            );
+
+                            if (confirmed == true) {
+                              context.read<GroceryListBloc>().add(
+                                GroceryItemDeleted(item.id),
+                              );
+                            }
+                          },
+                        ),
                       );
                     }).toList(),
                   );

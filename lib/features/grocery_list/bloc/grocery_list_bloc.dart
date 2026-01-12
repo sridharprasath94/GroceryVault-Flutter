@@ -18,6 +18,7 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
     on<GroceryListStarted>(_onStarted);
     on<GroceryItemToggled>(_onToggled);
     on<GroceryItemDeleted>(_onDeleted);
+    on<GroceryListSyncRequested>(_onSyncRequested);
   }
 
   Future<void> _onStarted(
@@ -37,10 +38,17 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
   }
 
   void _onToggled(GroceryItemToggled event, Emitter<GroceryListState> emit) {
-    _repository.toggleCompleted(event.id).run();
+    _repository.toggleCompleted(event.itemId).run();
   }
 
   void _onDeleted(GroceryItemDeleted event, Emitter<GroceryListState> emit) {
-    _repository.deleteGrocery(event.id).run();
+    _repository.deleteGrocery(event.itemId).run();
+  }
+
+  void _onSyncRequested(
+    GroceryListSyncRequested event,
+    Emitter<GroceryListState> emit,
+  ) {
+    // 🔜 Later: trigger Firestore sync service
   }
 }
