@@ -4,7 +4,7 @@ abstract class FirestoreSyncAdapter {
   Future<void> pushLocalToRemote();
 
   Future<void> applyRemoteDocument(
-    Map<String, dynamic> data,
+    Map<String, Object?> data,
     String documentId,
   );
 }
