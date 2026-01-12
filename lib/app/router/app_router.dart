@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groceryVault/features/splash/splash_screen.dart';
 import '../../features/auth/bloc/auth_bloc.dart';
@@ -52,20 +51,6 @@ class AppRouter {
           builder: (context, state) => const GroceryListScreen(),
         ),
       ],
-    );
-  }
-}
-
-class AuthCheckingScreen extends StatelessWidget {
-  const AuthCheckingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ColoredBox(
-        color: Colors.black12,
-        child: Center(child: CircularProgressIndicator()),
-      ),
     );
   }
 }

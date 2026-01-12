@@ -9,7 +9,8 @@ class AuthLoading extends AuthState {}
 class AuthChecking extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
-  const AuthAuthenticated();
+  final String uid;
+  const AuthAuthenticated(this.uid);
 }
 
 class AuthUnauthenticated extends AuthState {
