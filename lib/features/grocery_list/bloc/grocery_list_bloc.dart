@@ -37,12 +37,18 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
     );
   }
 
-  void _onToggled(GroceryItemToggled event, Emitter<GroceryListState> emit) {
-    _repository.toggleCompleted(event.itemId).run();
+  Future<void> _onToggled(
+    GroceryItemToggled event,
+    Emitter<GroceryListState> emit,
+  ) async {
+    await _repository.toggleCompleted(event.itemId).run();
   }
 
-  void _onDeleted(GroceryItemDeleted event, Emitter<GroceryListState> emit) {
-    _repository.deleteGrocery(event.itemId).run();
+  Future<void> _onDeleted(
+    GroceryItemDeleted event,
+    Emitter<GroceryListState> emit,
+  ) async {
+    await _repository.deleteGrocery(event.itemId).run();
   }
 
   void _onSyncRequested(

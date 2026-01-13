@@ -27,6 +27,8 @@ LazyDatabase _open() {
   return LazyDatabase(() async {
     final dir = await getApplicationDocumentsDirectory();
     final file = File(p.join(dir.path, 'app_db.sqlite'));
+    print('🗄 Drift DB path: ${file.path}');
+    print('🗄 Drift DB exists: ${await file.exists()}');
     return NativeDatabase(file);
   });
 }

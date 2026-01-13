@@ -18,7 +18,7 @@ class AppSessionCubit extends Cubit<void> {
   Future<void> onUserAuthenticated(String uid) async {
     final adapter = GroceryListSyncAdapter(_store, uid);
 
-    await _syncService.syncNow(adapter);
+    // await _syncService.syncNow(adapter);
     _syncService.startRealtime(adapter);
   }
 

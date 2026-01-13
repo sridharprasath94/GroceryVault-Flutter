@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:groceryVault/features/grocery_list/data/grocery_list_store.dart';
 
 import '../../../sync/firestore_sync_adapter.dart';
@@ -15,10 +16,28 @@ class GroceryListSyncAdapter implements FirestoreSyncAdapter {
 
   @override
   Future<void> applyRemoteDocument(
-    Map<String, dynamic> data,
-    String documentId,
-  ) async {
+      Map<String, dynamic> data,
+      String documentId,
+      ) async {
     final remote = GroceryList.fromFirestore(data, documentId);
+
+    // 🔍 DEBUG: print remote list
+    debugPrint('📦 Remote GroceryList:  id: ${remote.id}');
+    debugPrint('📦 Remote GroceryList:  title: ${remote.title}');
+    debugPrint('📦 Remote GroceryList:  updatedAt: ${remote.updatedAt}');
+    debugPrint('📦 Remote GroceryList:  items count: ${remote.items.length}');
+
+    for (final item in remote.items) {
+      debugPrint(
+        '📦 Remote GroceryList:  🧺 Item → '
+            'id=${item.id}, '
+            'listId=${item.listId}, '
+            'name=${item.name}, '
+            'checked=${item.isChecked}, '
+            'updatedAt=${item.updatedAt}',
+      );
+    }
+
     final local = await _local.getById(remote.id);
 
     if (local == null || remote.updatedAt > local.updatedAt) {
