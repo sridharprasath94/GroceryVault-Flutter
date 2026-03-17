@@ -61,4 +61,20 @@ class GroceryList {
       'items': items.map((i) => i.toFirestore()).toList(),
     };
   }
+
+  GroceryList copyWith({
+    List<GroceryItem>? items,
+  }) {
+    return GroceryList(
+      id: id,
+      title: title,
+      description: description,
+      isDeleted: isDeleted,
+      deletedAt: deletedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      items: items ?? this.items,
+    );
+  }
 }
+

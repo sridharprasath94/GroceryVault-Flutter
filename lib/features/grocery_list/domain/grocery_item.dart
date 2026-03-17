@@ -47,4 +47,20 @@ class GroceryItem {
       'sortOrder': sortOrder,
     };
   }
+
+  GroceryItem copyWith({
+    String? id,
+    int? createdAt,
+    int? updatedAt,
+  }) {
+    return GroceryItem(
+      id: id ?? this.id,
+      listId: listId,
+      name: name,
+      isChecked: isChecked,
+      sortOrder: sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
