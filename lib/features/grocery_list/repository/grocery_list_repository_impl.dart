@@ -39,6 +39,7 @@ class GroceryListRepositoryImpl implements GroceryListRepository {
   TaskEither<GroceryFailure, Unit> toggleCompleted(String id) {
     return TaskEither.tryCatch(() async {
       await _local.toggleCompleted(id);
+      print('Toggled completed for item with id: $id');
       return unit;
     }, (_, __) => const GroceryNetworkFailure());
   }

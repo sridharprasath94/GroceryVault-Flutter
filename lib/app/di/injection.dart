@@ -7,6 +7,7 @@ import '../../features/grocery_list/data/grocery_list_store.dart';
 import '../../features/grocery_list/repository/grocery_list_repository.dart';
 import '../../features/grocery_list/repository/grocery_list_repository_impl.dart';
 import '../../sync/firestore_sync_service.dart';
+import '../session/app_session_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -35,5 +36,15 @@ void setupDI() {
   // -------------------------
   getIt.registerLazySingleton<GroceryListRepository>(
     () => GroceryListRepositoryImpl(getIt<GroceryListStore>()),
+  );
+
+  // -------------------------
+  // App Session Cubit
+  // -------------------------
+  getIt.registerLazySingleton<AppSessionCubit>(
+    () => AppSessionCubit(
+      getIt<GroceryListStore>(),
+      getIt<FirestoreSyncService>(),
+    ),
   );
 }

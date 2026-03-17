@@ -1,10 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:groceryVault/features/grocery_list/data/grocery_list_store.dart';
 
 import '../../../app/core/failure/failure.dart';
-import '../../../app/di/injection.dart';
-import '../../../sync/firestore_sync_service.dart';
-import '../../grocery_list/sync/grocery_list_sync_adapter.dart';
 import '../repository/auth_repository.dart';
 
 part 'auth_event.dart';
@@ -21,56 +17,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogoutRequested>(_onLogout);
   }
 
-  void _onAuthStarted(
-      AuthStarted event,
-      Emitter<AuthState> emit,
-      ) async {
+  void _onAuthStarted(AuthStarted event, Emitter<AuthState> emit) async {
     final userOption = _repository.getSignedInUser();
 
     await userOption.match(
-          () async {
+      () async {
         emit(const AuthUnauthenticated());
       },
-          (user) async {
-        await _startGrocerySync(user.uid);
-        emit(const AuthAuthenticated());
+      (user) async {
+        emit(AuthAuthenticated(user.uid));
       },
     );
   }
 
   Future<void> _onLogin(
-      AuthLoginRequested event,
-      Emitter<AuthState> emit,
-      ) async {
+    AuthLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _repository
-        .signInWithEmail(
-      email: event.email,
-      password: event.password,
-    )
+        .signInWithEmail(email: event.email, password: event.password)
         .run();
 
     if (emit.isDone) return;
 
     await result.match(
-          (failure) async {
+      (failure) async {
         emit(AuthFailureState(failure));
       },
-          (_) async {
+      (_) async {
         final user = _repository.getSignedInUser().toNullable();
         if (user != null) {
-          await _startGrocerySync(user.uid);
+          emit(AuthAuthenticated(user.uid));
         }
-        emit(const AuthAuthenticated());
       },
     );
   }
 
   Future<void> _onGoogleLogin(
-      AuthGoogleLoginRequested event,
-      Emitter<AuthState> emit,
-      ) async {
+    AuthGoogleLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _repository.signInWithGoogle().run();
@@ -78,15 +66,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (emit.isDone) return;
 
     await result.match(
-          (failure) async {
+      (failure) async {
         emit(AuthFailureState(failure));
       },
-          (_) async {
+      (_) async {
         final user = _repository.getSignedInUser().toNullable();
         if (user != null) {
-          await _startGrocerySync(user.uid);
+          emit(AuthAuthenticated(user.uid));
         }
-        emit(const AuthAuthenticated());
       },
     );
   }
@@ -103,15 +90,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (failure) => emit(AuthFailureState(failure)),
       (_) => emit(const AuthUnauthenticated()),
     );
-  }
-
-  Future<void> _startGrocerySync(String uid) async {
-    final store = getIt<GroceryListStore>();
-    final syncService = getIt<FirestoreSyncService>();
-
-    final adapter = GroceryListSyncAdapter(store, uid);
-
-    await syncService.syncNow(adapter);
-    syncService.startRealtime(adapter);
   }
 }

@@ -17,7 +17,7 @@ class FirestoreSyncService {
       await adapter.applyRemoteDocument(doc.data(), doc.id);
     }
 
-    await adapter.pushLocalToRemote();
+    // await adapter.pushLocalToRemote();
   }
 
   void startRealtime(FirestoreSyncAdapter adapter) {

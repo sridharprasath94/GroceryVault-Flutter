@@ -21,33 +21,13 @@ class GroceryList {
     required this.items,
   });
 
-  GroceryList copyWith({
-    String? id,
-    String? title,
-    String? description,
-    bool? isDeleted,
-    int? deletedAt,
-    int? createdAt,
-    int? updatedAt,
-    List<GroceryItem>? items,
-  }) {
-    return GroceryList(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      isDeleted: isDeleted ?? this.isDeleted,
-      deletedAt: deletedAt ?? this.deletedAt,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      items: items ?? this.items,
-    );
-  }
-
   factory GroceryList.fromFirestore(
     Map<String, dynamic> json,
     String documentId,
   ) {
-    final itemsJson = (json['items'] as List<dynamic>? ?? []);
+    final itemsJson = json['items'] as List<dynamic>? ?? [];
+    final listCreatedAt = json['createdAt'] as int? ?? 0;
+    final listUpdatedAt = json['updatedAt'] as int? ?? 0;
 
     return GroceryList(
       id: documentId,
@@ -55,22 +35,18 @@ class GroceryList {
       description: json['description'] as String?,
       isDeleted: json['isDeleted'] as bool? ?? false,
       deletedAt: json['deletedAt'] as int?,
-      createdAt: json['createdAt'] as int? ?? 0,
-      updatedAt: json['updatedAt'] as int? ?? 0,
-      items: itemsJson.asMap().entries.map((entry) {
-        final index = entry.key;
-        final map = Map<String, dynamic>.from(entry.value as Map);
-
-        // Firestore items do NOT have ids → generate deterministic one
-        final itemId = map['id'] as String? ??
-            '${documentId}_item_$index';
-
-        return GroceryItem.fromFirestore(
-          map,
-          itemId: itemId,
-          listId: documentId,
-        );
-      }).toList(),
+      createdAt: listCreatedAt,
+      updatedAt: listUpdatedAt,
+      items: itemsJson
+          .map(
+            (e) => GroceryItem.fromFirestore(
+              json: Map<String, dynamic>.from(e as Map),
+              listId: documentId,
+              listCreatedAt: listCreatedAt,
+              listUpdatedAt: listUpdatedAt,
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -85,4 +61,20 @@ class GroceryList {
       'items': items.map((i) => i.toFirestore()).toList(),
     };
   }
+
+  GroceryList copyWith({
+    List<GroceryItem>? items,
+  }) {
+    return GroceryList(
+      id: id,
+      title: title,
+      description: description,
+      isDeleted: isDeleted,
+      deletedAt: deletedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      items: items ?? this.items,
+    );
+  }
 }
+

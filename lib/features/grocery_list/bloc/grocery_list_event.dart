@@ -5,11 +5,13 @@ sealed class GroceryListEvent {}
 class GroceryListStarted extends GroceryListEvent {}
 
 class GroceryItemToggled extends GroceryListEvent {
-  final String id;
-  GroceryItemToggled(this.id);
+  final String itemId;
+  GroceryItemToggled(this.itemId);
 }
 
 class GroceryItemDeleted extends GroceryListEvent {
-  final String id;
-  GroceryItemDeleted(this.id);
+  final String itemId;
+  GroceryItemDeleted(this.itemId);
 }
+
+class GroceryListSyncRequested extends GroceryListEvent {}
